@@ -15,12 +15,14 @@ export default class Queen extends Piece {
 
         for (let dir of directions) {
             let pos = Square.at(location.row+dir[0], location.col+dir[1]);
-            let valid = board.squareValid(pos) && (board.getPiece(pos) == undefined);
+            let clear = board.squareValid(pos);
 
-            while (valid) {
-                moves.push(pos);
+            while (clear) {
+                if (!board.squareValid(pos)) break;
+                let piece = board.getPiece(pos);
+                if (board.isClearMove(pos,this.player)) moves.push(pos);
+                clear = piece == undefined;
                 pos = Square.at(pos.row+dir[0], pos.col+dir[1]);
-                valid = board.squareValid(pos) && (board.getPiece(pos) == undefined);
             }
         }
 
