@@ -38,7 +38,7 @@ export default class Piece {
         return squares
     }
 
-    protected static getRowSquares(location : Square) : Square[] {
+    protected static getColSquares(location : Square) : Square[] {
         let squares = new Array(0);
 
         for (let i = 0; i < 8; i++) {
@@ -48,13 +48,12 @@ export default class Piece {
         return squares;
     }
 
-    protected static getColSquares(location: Square) : Square[] {
+    protected static getRowSquares(location: Square) : Square[] {
         let squares = new Array(0);
 
         for (let i = 0; i < 8; i++) {
             squares.push(Square.at(location.row,i));
         }
-
         return squares;
     }
 
