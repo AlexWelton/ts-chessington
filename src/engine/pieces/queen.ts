@@ -11,13 +11,18 @@ export default class Queen extends Piece {
     public getAvailableMoves(board: Board) {
         let moves = new Array(0);
         let location = board.findPiece(this);
+        let directions = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]];
 
-        for (let square of Piece.getTLDiagonalSquares(location)) if (!location.equals(square)) moves.push(square);
+        for (let dir of directions) {
+            let pos = Square.at(location.row+dir[0], location.col+dir[1]);
+            let valid = board.squareValid(pos) && (board.getPiece(pos) == undefined);
 
-        for (let square of Piece.getBLDiagonalSquares(location)) if (!location.equals(square)) moves.push(square);
-
-        for (let square of Piece.getColSquares(location)) if (!location.equals(square)) moves.push(square);
-        for (let square of Piece.getRowSquares(location)) if (!location.equals(square)) moves.push(square);
+            while (valid) {
+                moves.push(pos);
+                pos = Square.at(pos.row+dir[0], pos.col+dir[1]);
+                valid = board.squareValid(pos) && (board.getPiece(pos) == undefined);
+            }
+        }
 
         return moves;
     }

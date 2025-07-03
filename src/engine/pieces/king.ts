@@ -12,9 +12,14 @@ export default class King extends Piece {
         let moves = new Array(0);
         let location = board.findPiece(this);
 
-        for (let xOffset of [-1,0,1]) {
-            for (let yOffset of [-1,0,1]) {
-                if(! (xOffset == 0 && yOffset == 0)) moves.push(Square.at(location.row+xOffset, location.col+yOffset));
+        let directions = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]];
+
+        for (let dir of directions) {
+            let pos = Square.at(location.row+dir[0], location.col+dir[1]);
+            let valid = board.squareValid(pos) && (board.getPiece(pos) == undefined);
+
+            if (valid) {
+                moves.push(pos);
             }
         }
 

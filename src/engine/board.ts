@@ -40,6 +40,10 @@ export default class Board {
         }
     }
 
+    public squareValid(square: Square) {
+        return (square.row > -1 && square.row < 8 && square.col > -1 && square.col < 8)
+    }
+
     private createBoard() {
         const board = new Array(GameSettings.BOARD_SIZE);
         for (let i = 0; i < board.length; i++) {

@@ -12,46 +12,19 @@ export default class Rook extends Piece {
         let moves = new Array(0);
         let location = board.findPiece(this);
 
-        let rowSquares = Piece.getRowSquares(location);
-        let colSquares = Piece.getColSquares(location);
+        let directions = [[0,1],[1,0],[0,-1],[-1,0]];
 
-        let rowRange = [-1,-1];
-        let colRange = [-1,-1];
+        for (let dir of directions) {
+            let pos = Square.at(location.row+dir[0], location.col+dir[1]);
+            let valid = board.squareValid(pos) && (board.getPiece(pos) == undefined);
 
-        for (let square of colSquares) {
-            if (!location.equals(square)) {
-                let piece = board.getPiece(square);
-
-                if (piece != undefined) {
-                    if (square.row < location.row && (colRange[0] == -1 || square.row > colRange[0])) colRange[0] = square.row;
-                    if (square.row > location.row && (colRange[1] == -1 || square.row < colRange[1])) colRange[1] = square.row;
-                }
+            while (valid) {
+                moves.push(pos);
+                pos = Square.at(pos.row+dir[0], pos.col+dir[1]);
+                valid = board.squareValid(pos) && (board.getPiece(pos) == undefined);
             }
         }
 
-        for (let square of rowSquares) {
-            if (!location.equals(square)) {
-                let piece = board.getPiece(square);
-
-                if (piece != undefined) {
-                    if (square.col < location.col &&  (rowRange[0] == -1 || square.col > rowRange[0])) rowRange[0] = square.col;
-                    if (square.col > location.col &&  (rowRange[1] == -1 || square.col < rowRange[1])) rowRange[1] = square.col;
-                }
-
-            }
-        }
-
-        if (rowRange[1] == -1) rowRange[1] = 8;
-        if (colRange[1] == -1) colRange[1] = 8;
-
-        for (let square of rowSquares) {
-            if ((!location.equals(square)) && square.col > rowRange[0] && square.col < rowRange[1])  moves.push(square);
-        }
-
-        for (let square of colSquares) {
-            if ((!location.equals(square)) && square.row > colRange[0] && square.row < colRange[1])  moves.push(square);
-        }
-        console.log(moves);
         return moves;
     }
 }
