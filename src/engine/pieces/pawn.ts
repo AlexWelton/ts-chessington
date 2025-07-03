@@ -18,12 +18,12 @@ export default class Pawn extends Piece {
         //Single move
         let singleMoveLocation = Square.at(location.row+direction,location.col);
 
-        if (typeof board.getPiece(singleMoveLocation) == 'undefined') moves.push(singleMoveLocation);
+        if (board.squareValid(singleMoveLocation) && (typeof board.getPiece(singleMoveLocation) == 'undefined')) moves.push(singleMoveLocation);
 
         //Double move
         if (location.row == homerow) {
             let doubleMoveLocation = Square.at(location.row+(direction*2),location.col);
-            if (typeof board.getPiece(singleMoveLocation) == 'undefined' && typeof board.getPiece(doubleMoveLocation) == 'undefined') moves.push(doubleMoveLocation);
+            if (board.squareValid(doubleMoveLocation) && (typeof board.getPiece(singleMoveLocation) == 'undefined') && typeof board.getPiece(doubleMoveLocation) == 'undefined' ) moves.push(doubleMoveLocation);
         }
 
         return moves;
