@@ -16,7 +16,7 @@ export default class King extends Piece {
 
         for (let dir of directions) {
             let pos = Square.at(location.row+dir[0], location.col+dir[1]);
-            let valid = board.squareValid(pos) && (board.getPiece(pos) == undefined);
+            let valid = board.isClearMove(pos,this.player);
 
             if (valid) {
                 moves.push(pos);
