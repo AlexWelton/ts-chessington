@@ -12,10 +12,8 @@ export default class Rook extends Piece {
         let moves = new Array(0);
         let location = board.findPiece(this);
 
-        for (let i = 0; i < 8; i++) {
-            if (i != location.row) moves.push(Square.at(i,location.col));
-            if (i != location.col) moves.push(Square.at(location.row,i));
-        }
+        for (let square of Piece.getColSquares(location)) if (!location.equals(square)) moves.push(square);
+        for (let square of Piece.getRowSquares(location)) if (!location.equals(square)) moves.push(square);
 
         return moves;
     }
