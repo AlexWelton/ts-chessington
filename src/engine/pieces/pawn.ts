@@ -32,12 +32,13 @@ export default class Pawn extends Piece {
 
         if (board.squareValid(leftCaptureLocation)) {
             let leftPiece = board.getPiece(leftCaptureLocation);
-            let rightPiece  = board.getPiece(leftCaptureLocation);
-
             if (leftPiece != undefined && leftPiece.player != this.player && !(leftPiece instanceof King)) moves.push(leftCaptureLocation);
-            if (rightPiece != undefined && rightPiece.player != this.player && !(rightPiece instanceof King)) moves.push(rightCaptureLocation);
         }
 
+        if (board.squareValid(rightCaptureLocation)) {
+            let rightPiece  = board.getPiece(leftCaptureLocation);
+            if (rightPiece != undefined && rightPiece.player != this.player && !(rightPiece instanceof King)) moves.push(rightCaptureLocation);
+        }
 
         return moves;
     }
