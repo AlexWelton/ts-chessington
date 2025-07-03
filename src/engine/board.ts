@@ -2,6 +2,7 @@ import Player from './player';
 import GameSettings from './gameSettings';
 import Square from './square';
 import Piece from './pieces/piece';
+import King from "./pieces/king";
 
 export default class Board {
     public currentPlayer: Player;
@@ -42,6 +43,11 @@ export default class Board {
 
     public squareValid(square: Square) {
         return (square.row > -1 && square.row < 8 && square.col > -1 && square.col < 8)
+    }
+
+    public isClearMove(square: Square, player: Player) {
+        let piece = this.getPiece(square);
+        return (typeof piece == `undefined` || (piece.player != player && !(piece instanceof King)))
     }
 
     private createBoard() {
