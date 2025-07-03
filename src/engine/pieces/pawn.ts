@@ -16,10 +16,15 @@ export default class Pawn extends Piece {
         let homerow = this.player == Player.WHITE ? 1 : 6;
 
         //Single move
-        moves.push(Square.at(location.row+direction,location.col));
+        let singleMoveLocation = Square.at(location.row+direction,location.col);
+
+        if (typeof board.getPiece(singleMoveLocation) == 'undefined') moves.push(singleMoveLocation);
 
         //Double move
-        if (location.row == homerow) moves.push(Square.at(location.row+(direction*2),location.col));
+        if (location.row == homerow) {
+            let doubleMoveLocation = Square.at(location.row+(direction*2),location.col);
+            if (typeof board.getPiece(singleMoveLocation) == 'undefined' && typeof board.getPiece(doubleMoveLocation) == 'undefined') moves.push(doubleMoveLocation);
+        }
 
         return moves;
     }
