@@ -17,8 +17,8 @@ export default class Knight extends Piece {
                 let posL = Square.at(location.row + direction*2, location.col + orientation);
                 let posR = Square.at(location.col + orientation, location.col + direction*2)
 
-                if (board.squareValid(posL)) moves.push(posL);
-                if (board.squareValid(posR)) moves.push(posR);
+                if (board.isClearMove(posL,this.player)) moves.push(posL);
+                if (board.isClearMove(posR,this.player)) moves.push(posR);
             }
         }
 

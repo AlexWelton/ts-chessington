@@ -46,6 +46,7 @@ export default class Board {
     }
 
     public isClearMove(square: Square, player: Player) {
+        if (! this.squareValid(square)) return false;
         let piece = this.getPiece(square);
         return (typeof piece == `undefined` || (piece.player != player && !(piece instanceof King)))
     }
