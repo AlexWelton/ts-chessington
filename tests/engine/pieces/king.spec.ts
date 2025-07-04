@@ -3,6 +3,7 @@ import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import Pawn from '../../../src/engine/pieces/pawn';
+import Rook from "../../../src/engine/pieces/rook";
 
 describe('King', () => {
     let board: Board;
@@ -24,6 +25,7 @@ describe('King', () => {
 
     it('cannot make any other moves', () => {
         const king = new King(Player.WHITE);
+        king.hasMoved = true;
         board.setPiece(Square.at(3, 4), king);
 
         const moves = king.getAvailableMoves(board);
@@ -33,6 +35,7 @@ describe('King', () => {
 
     it('cannot leave the board', () => {
         const king = new King(Player.WHITE);
+        king.hasMoved = true;
         board.setPiece(Square.at(0, 0), king);
 
         const moves = king.getAvailableMoves(board);
@@ -73,5 +76,16 @@ describe('King', () => {
         const moves = king.getAvailableMoves(board);
 
         moves.should.not.deep.include(Square.at(5, 5));
+    });
+
+    it('can move into castle kingside', () => {
+        const king = new King(Player.WHITE);
+        const rook = new Rook(Player.WHITE);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rook);
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.deep.include(Square.at(0, 1));
     });
 });

@@ -24,11 +24,10 @@ export default class Pawn extends Piece {
 
     public isValidEnPassant (board: Board, newSquare: Square): boolean{
         const currentSquare = board.findPiece(this);
-        console.log(currentSquare.row, newSquare.col);
+
         let otherPiece = board.getPiece(Square.at(currentSquare.row, newSquare.col));
 
-        console.log(otherPiece);
-        console.log(otherPiece instanceof Pawn && board.lastDoubleMove && otherPiece.player != this.player);
+
         return (otherPiece instanceof Pawn && board.lastDoubleMove && otherPiece.player != this.player);
     }
 

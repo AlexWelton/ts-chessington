@@ -4,8 +4,11 @@ import Board from '../board';
 import Square from "../square";
 
 export default class King extends Piece {
+    public hasMoved : boolean;
+
     public constructor(player: Player) {
         super(player);
+        this.hasMoved = false;
     }
 
     public getAvailableMoves(board: Board) {
@@ -14,6 +17,7 @@ export default class King extends Piece {
 
         let directions = [[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1],[-1,0],[-1,1]];
 
+        //Cardinal Direction Movement
         for (let dir of directions) {
             let pos = Square.at(location.row+dir[0], location.col+dir[1]);
             let valid = board.isClearMove(pos,this.player);
@@ -23,6 +27,22 @@ export default class King extends Piece {
             }
         }
 
+        //Castling
+        console.log(this.hasMoved);
+        if (!this.hasMoved) {
+            moves.push(Square.at(location.row,location.col-2));
+            moves.push(Square.at(location.row,location.col+2));
+        }
+
+        console.log(moves);
         return moves;
     }
+
+    public moveTo(board: Board, newSquare: Square) {
+        const currentSquare = board.findPiece(this);
+        board.movePiece(currentSquare, newSquare);
+        board.lastDoubleMove = false;
+        this.hasMoved = true;
+    }
+
 }

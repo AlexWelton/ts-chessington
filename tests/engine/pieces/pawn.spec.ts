@@ -225,7 +225,7 @@ describe('Pawn', () => {
 
             var eaten = board.getPiece(Square.at(3,3));
 
-            console.log(eaten);
+
             assert.notEqual(eaten, undefined, 'is undefined');
 
         });
