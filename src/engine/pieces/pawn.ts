@@ -3,6 +3,7 @@ import Player from '../player';
 import Board from '../board';
 import Square from "../square";
 import King from "./king";
+import Queen from "./queen";
 
 export default class Pawn extends Piece {
 
@@ -17,8 +18,12 @@ export default class Pawn extends Piece {
             board.setPiece(Square.at(currentSquare.row, newSquare.col), undefined);
         }
         board.lastDoubleMove = (Math.abs(currentSquare.row - newSquare.row) == 2);
-
         board.movePiece(currentSquare, newSquare);
+
+        let endrow = this.player == Player.WHITE ? 7 : 0;
+        if (newSquare.row == endrow) {
+            board.setPiece(newSquare, new Queen (this.player));
+        }
 
     }
 

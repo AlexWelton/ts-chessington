@@ -6,6 +6,7 @@ import Rook from '../../../src/engine/pieces/rook';
 import King from '../../../src/engine/pieces/king';
 import * as assert from "node:assert";
 import {should} from "chai";
+import Queen from "../../../src/engine/pieces/queen";
 
 describe('Pawn', () => {
 
@@ -225,7 +226,6 @@ describe('Pawn', () => {
 
             var eaten = board.getPiece(Square.at(3,3));
 
-
             assert.notEqual(eaten, undefined, 'is undefined');
 
         });
@@ -254,6 +254,18 @@ describe('Pawn', () => {
 
         });
 
+        it('cannot move en passant after a different piece moves', () => {
+            const pawn = new Pawn(Player.BLACK);
+
+            board.setPiece(Square.at(1, 0), pawn);
+
+            pawn.moveTo(board, Square.at(0,0));
+
+            let piece = board.getPiece(Square.at(0,0));
+
+            assert.equal(piece instanceof Queen, true);
+
+        });
 
     });
 
