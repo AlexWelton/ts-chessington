@@ -17,7 +17,11 @@ export default class Pawn extends Piece {
         const currentSquare = board.findPiece(this);
 
         this.lastDoubleMove = (Math.abs(currentSquare.row - newSquare.row) == 2);
-        console.log('pawn is moving', currentSquare, newSquare, this.lastDoubleMove);
+
+        if (this.isValidEnPassant(board,newSquare)) {
+            board.setPiece(Square.at(currentSquare.row, newSquare.col), undefined);
+        }
+
         board.movePiece(currentSquare, newSquare);
 
     }

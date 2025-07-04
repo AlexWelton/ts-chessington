@@ -4,6 +4,8 @@ import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import Rook from '../../../src/engine/pieces/rook';
 import King from '../../../src/engine/pieces/king';
+import * as assert from "node:assert";
+import {should} from "chai";
 
 describe('Pawn', () => {
 
@@ -82,6 +84,21 @@ describe('Pawn', () => {
             const moves = pawn.getAvailableMoves(board);
 
             moves.should.not.deep.include(Square.at(5, 3));
+        });
+
+        it('can move to capture en passant', () => {
+            const pawn = new Pawn(Player.WHITE);
+            const opposingPiece = new Pawn(Player.BLACK);
+
+            board.currentPlayer = Player.BLACK;
+
+            board.setPiece(Square.at(4, 3), pawn);
+            board.setPiece(Square.at(6, 4), opposingPiece);
+            opposingPiece.moveTo(board, Square.at(4,4));
+
+            const moves = pawn.getAvailableMoves(board);
+
+            moves.should.deep.include(Square.at(5, 4));
         });
     });
 
@@ -176,6 +193,25 @@ describe('Pawn', () => {
 
             moves.should.deep.include(Square.at(2, 3));
         });
+
+        it('can actually capture en passant', () => {
+            const pawn = new Pawn(Player.BLACK);
+            const opposingPiece = new Pawn(Player.WHITE);
+
+            board.currentPlayer = Player.WHITE;
+
+            board.setPiece(Square.at(3, 4), pawn);
+            board.setPiece(Square.at(1, 3), opposingPiece);
+            opposingPiece.moveTo(board, Square.at(3,3));
+            pawn.moveTo(board, Square.at(2,3));
+
+            var eaten = board.getPiece(Square.at(3,3));
+
+
+            assert.equal(eaten, undefined, 'not undefined');
+
+        });
+
 
     });
 
