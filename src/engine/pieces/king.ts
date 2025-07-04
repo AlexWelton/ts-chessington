@@ -2,6 +2,7 @@ import Piece from './piece';
 import Player from '../player';
 import Board from '../board';
 import Square from "../square";
+import Rook from "./rook";
 
 export default class King extends Piece {
     public hasMoved : boolean;
@@ -24,9 +25,8 @@ export default class King extends Piece {
         }
 
         //Rook check here
-
-        return true;
-
+        let piece = board.getPiece(currentSquare);
+        return (piece instanceof Rook && piece.player == this.player);
     }
 
     public getAvailableMoves(board: Board) {

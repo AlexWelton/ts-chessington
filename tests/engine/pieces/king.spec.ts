@@ -114,4 +114,14 @@ describe('King', () => {
 
         moves.should.not.deep.include(Square.at(0, 1));
     });
+
+    it('cannot castle without rook', () => {
+        const king = new King(Player.WHITE);
+
+        board.setPiece(Square.at(0, 3), king);
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(0, 1));
+    });
 });
