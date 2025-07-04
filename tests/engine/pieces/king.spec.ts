@@ -88,4 +88,16 @@ describe('King', () => {
 
         moves.should.deep.include(Square.at(0, 1));
     });
+
+    it('cannot castle after moving', () => {
+        const king = new King(Player.WHITE);
+        const rook = new Rook(Player.WHITE);
+        board.setPiece(Square.at(1, 3), king);
+        board.setPiece(Square.at(0, 0), rook);
+        king.moveTo(board, Square.at(0,3));
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(0, 1));
+    });
 });

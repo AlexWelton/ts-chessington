@@ -43,6 +43,23 @@ export default class King extends Piece {
         board.movePiece(currentSquare, newSquare);
         board.lastDoubleMove = false;
         this.hasMoved = true;
+        var diff = newSquare.col - currentSquare.col;
+        if (Math.abs(diff) == 2) {
+            let homerow = this.player == Player.WHITE ? 0 : 7;
+
+            if (diff > 0){
+
+                let rook = board.getPiece(Square.at(homerow, 7));
+                board.setPiece(Square.at(homerow, 4), rook);
+                board.setPiece(Square.at(homerow, 7), undefined);
+            } else {
+
+                let rook = board.getPiece(Square.at(homerow, 0));
+                board.setPiece(Square.at(homerow, 2), rook);
+                board.setPiece(Square.at(homerow, 0), undefined);
+
+            }
+        }
     }
 
 }

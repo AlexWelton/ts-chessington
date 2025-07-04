@@ -4,6 +4,7 @@ import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import Pawn from '../../../src/engine/pieces/pawn';
 import King from '../../../src/engine/pieces/king';
+import assert from "node:assert";
 
 describe('Rook', () => {
     let board: Board;
@@ -87,5 +88,17 @@ describe('Rook', () => {
         const moves = rook.getAvailableMoves(board);
 
         moves.should.not.deep.include(Square.at(4, 6));
+    });
+
+    it('moves during castling kingside', () => {
+        const king = new King(Player.WHITE);
+        const rook = new Rook(Player.WHITE);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rook);
+        king.moveTo(board, Square.at(0,1));
+
+        let rookSquare = board.findPiece(rook);
+        assert.equal(rookSquare.row, 0);
+        assert.equal(rookSquare.col, 2);
     });
 });
