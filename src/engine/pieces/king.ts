@@ -26,7 +26,7 @@ export default class King extends Piece {
 
         //Rook check here
         let piece = board.getPiece(currentSquare);
-        return (piece instanceof Rook && piece.player == this.player);
+        return (piece instanceof Rook && piece.player == this.player && !piece.hasMoved);
     }
 
     public getAvailableMoves(board: Board) {

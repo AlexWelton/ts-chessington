@@ -5,8 +5,11 @@ import Square from "../square";
 import King from "./king";
 
 export default class Rook extends Piece {
+    public hasMoved : boolean;
+
     public constructor(player: Player) {
         super(player);
+        this.hasMoved = false;
     }
 
     public getAvailableMoves(board: Board) {
@@ -18,5 +21,12 @@ export default class Rook extends Piece {
         this.checkDirections(moves,directions,board,location);
 
         return moves;
+    }
+
+    public moveTo(board: Board, newSquare: Square) {
+        const currentSquare = board.findPiece(this);
+        board.movePiece(currentSquare, newSquare);
+        board.lastDoubleMove = false;
+        this.hasMoved = true;
     }
 }
