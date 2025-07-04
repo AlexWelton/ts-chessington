@@ -6,21 +6,17 @@ import King from "./king";
 
 export default class Pawn extends Piece {
 
-    public lastDoubleMove: boolean;
-
     public constructor(player: Player) {
         super(player);
-        this.lastDoubleMove = false;
     }
 
     public moveTo(board: Board, newSquare: Square) {
         const currentSquare = board.findPiece(this);
 
-        this.lastDoubleMove = (Math.abs(currentSquare.row - newSquare.row) == 2);
-
-        if (this.isValidEnPassant(board,newSquare)) {
+        if (Math.abs(newSquare.col - currentSquare.col) == 1 && this.isValidEnPassant(board,newSquare)) {
             board.setPiece(Square.at(currentSquare.row, newSquare.col), undefined);
         }
+        board.lastDoubleMove = (Math.abs(currentSquare.row - newSquare.row) == 2);
 
         board.movePiece(currentSquare, newSquare);
 
@@ -32,8 +28,8 @@ export default class Pawn extends Piece {
         let otherPiece = board.getPiece(Square.at(currentSquare.row, newSquare.col));
 
         console.log(otherPiece);
-        console.log(otherPiece instanceof Pawn && otherPiece.lastDoubleMove && otherPiece.player != this.player);
-        return (otherPiece instanceof Pawn && otherPiece.lastDoubleMove && otherPiece.player != this.player);
+        console.log(otherPiece instanceof Pawn && board.lastDoubleMove && otherPiece.player != this.player);
+        return (otherPiece instanceof Pawn && board.lastDoubleMove && otherPiece.player != this.player);
     }
 
     public getAvailableMoves(board: Board) {

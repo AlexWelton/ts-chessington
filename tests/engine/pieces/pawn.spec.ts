@@ -212,6 +212,48 @@ describe('Pawn', () => {
 
         });
 
+        it('will not capture for non en passant moves', () => {
+            const pawn = new Pawn(Player.BLACK);
+            const opposingPiece = new Pawn(Player.WHITE);
+
+            board.currentPlayer = Player.WHITE;
+
+            board.setPiece(Square.at(3, 4), pawn);
+            board.setPiece(Square.at(1, 3), opposingPiece);
+            opposingPiece.moveTo(board, Square.at(3,3));
+            pawn.moveTo(board, Square.at(2,4));
+
+            var eaten = board.getPiece(Square.at(3,3));
+
+            console.log(eaten);
+            assert.notEqual(eaten, undefined, 'is undefined');
+
+        });
+
+        it('cannot move en passant after a different piece moves', () => {
+            const pawn = new Pawn(Player.BLACK);
+            const opposingPiece = new Pawn(Player.WHITE);
+
+            const otherPawn = new Pawn(Player.BLACK);
+            const otherOpposingPawn = new Pawn(Player.WHITE);
+
+            board.currentPlayer = Player.WHITE;
+
+            board.setPiece(Square.at(3, 4), pawn);
+            board.setPiece(Square.at(1, 3), opposingPiece);
+            board.setPiece(Square.at(0, 0), otherPawn);
+            board.setPiece(Square.at(1,1), otherOpposingPawn);
+
+            opposingPiece.moveTo(board, Square.at(3,3));
+            otherPawn.moveTo(board, Square.at(1,0));
+            otherOpposingPawn.moveTo(board, Square.at(0,1));
+
+            const moves = pawn.getAvailableMoves(board);
+
+            moves.should.not.deep.include(Square.at(2, 3));
+
+        });
+
 
     });
 
