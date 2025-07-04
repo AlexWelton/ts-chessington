@@ -4,6 +4,9 @@ import Board from '../board';
 import Square from "../square";
 import King from "./king";
 import Queen from "./queen";
+import Knight from "./knight";
+import Bishop from "./bishop";
+import Rook from "./rook";
 
 export default class Pawn extends Piece {
 
@@ -22,7 +25,30 @@ export default class Pawn extends Piece {
 
         let endrow = this.player == Player.WHITE ? 7 : 0;
         if (newSquare.row == endrow) {
-            board.setPiece(newSquare, new Queen (this.player));
+            //Promoting
+
+            let pieceType = null;
+            let promoteString = (board.defaultPromote == undefined) ? prompt("Select piece to promote into >> ") : board.defaultPromote;
+
+            switch (promoteString) {
+                case "Q":
+                    pieceType = Queen;
+                    break;
+                case "N":
+                    pieceType = Knight;
+                    break;
+                case "B":
+                    pieceType = Bishop;
+                    break;
+                case "R":
+                    pieceType = Rook;
+                    break;
+                default:
+                    console.error("Invalid promote type");
+                    return;
+            }
+
+            board.setPiece(newSquare, new pieceType (this.player));
         }
 
     }

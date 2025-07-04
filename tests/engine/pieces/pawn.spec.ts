@@ -7,6 +7,7 @@ import King from '../../../src/engine/pieces/king';
 import * as assert from "node:assert";
 import {should} from "chai";
 import Queen from "../../../src/engine/pieces/queen";
+import Knight from "../../../src/engine/pieces/knight";
 
 describe('Pawn', () => {
 
@@ -254,8 +255,9 @@ describe('Pawn', () => {
 
         });
 
-        it('cannot move en passant after a different piece moves', () => {
+        it('promote to queen (when queen)', () => {
             const pawn = new Pawn(Player.BLACK);
+            board.defaultPromote = 'Q';
 
             board.setPiece(Square.at(1, 0), pawn);
 
@@ -264,6 +266,20 @@ describe('Pawn', () => {
             let piece = board.getPiece(Square.at(0,0));
 
             assert.equal(piece instanceof Queen, true);
+
+        });
+
+        it('promote to knight (when knight)', () => {
+            const pawn = new Pawn(Player.BLACK);
+            board.defaultPromote = 'N';
+
+            board.setPiece(Square.at(1, 0), pawn);
+
+            pawn.moveTo(board, Square.at(0,0));
+
+            let piece = board.getPiece(Square.at(0,0));
+
+            assert.equal(piece instanceof Knight, true);
 
         });
 

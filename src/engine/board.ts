@@ -9,11 +9,13 @@ export default class Board {
     public currentPlayer: Player;
     private readonly board: (Piece | undefined)[][];
     public lastDoubleMove: boolean;
+    public defaultPromote:(String | undefined);
 
     public constructor(currentPlayer?: Player) {
         this.currentPlayer = currentPlayer ? currentPlayer : Player.WHITE;
         this.board = this.createBoard();
         this.lastDoubleMove = false;
+        this.defaultPromote = undefined;
     }
 
     public setPiece(square: Square, piece: Piece | undefined) {
