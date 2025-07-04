@@ -4,6 +4,7 @@ import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import Pawn from '../../../src/engine/pieces/pawn';
 import Rook from "../../../src/engine/pieces/rook";
+import Bishop from "../../../src/engine/pieces/bishop";
 
 describe('King', () => {
     let board: Board;
@@ -95,6 +96,19 @@ describe('King', () => {
         board.setPiece(Square.at(1, 3), king);
         board.setPiece(Square.at(0, 0), rook);
         king.moveTo(board, Square.at(0,3));
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(0, 1));
+    });
+
+    it('cannot castle when pieces in between', () => {
+        const king = new King(Player.WHITE);
+        const rook = new Rook(Player.WHITE);
+        const piece = new Bishop(Player.WHITE);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rook);
+        board.setPiece(Square.at(0, 1), piece);
 
         const moves = king.getAvailableMoves(board);
 

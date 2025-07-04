@@ -11,6 +11,24 @@ export default class King extends Piece {
         this.hasMoved = false;
     }
 
+    public checkCastleAllowed(board : Board, direction:number) {
+        let location = board.findPiece(this);
+        let currentSquare = Square.at(location.row, location.col + direction)
+
+        let count = direction == -1 ? 2 : 3
+
+        for (let i = count; i > 0; i--) {
+            if (!(board.getPiece(currentSquare) == undefined)) return false
+
+            currentSquare = Square.at(currentSquare.row, currentSquare.col + direction);
+        }
+
+        //Rook check here
+
+        return true;
+
+    }
+
     public getAvailableMoves(board: Board) {
         let moves = new Array(0);
         let location = board.findPiece(this);
@@ -30,8 +48,10 @@ export default class King extends Piece {
         //Castling
         console.log(this.hasMoved);
         if (!this.hasMoved) {
-            moves.push(Square.at(location.row,location.col-2));
-            moves.push(Square.at(location.row,location.col+2));
+
+            if (this.checkCastleAllowed(board, -1)) moves.push(Square.at(location.row,location.col-2));
+
+            if (this.checkCastleAllowed(board, 1)) moves.push(Square.at(location.row,location.col+2));
         }
 
         console.log(moves);
