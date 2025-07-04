@@ -15,18 +15,7 @@ export default class Rook extends Piece {
 
         let directions = [[0,1],[1,0],[0,-1],[-1,0]];
 
-        for (let dir of directions) {
-            let pos = Square.at(location.row+dir[0], location.col+dir[1]);
-            let clear = board.squareValid(pos);
-
-            while (clear) {
-                if (!board.squareValid(pos)) break;
-                let piece = board.getPiece(pos);
-                if (board.isClearMove(pos,this.player)) moves.push(pos);
-                clear = piece == undefined;
-                pos = Square.at(pos.row+dir[0], pos.col+dir[1]);
-            }
-        }
+        this.checkDirections(moves,directions,board,location);
 
         return moves;
     }

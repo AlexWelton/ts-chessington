@@ -161,6 +161,22 @@ describe('Pawn', () => {
 
             moves.should.not.deep.include(Square.at(3, 3));
         });
+
+        it('can move to capture en passant', () => {
+            const pawn = new Pawn(Player.BLACK);
+            const opposingPiece = new Pawn(Player.WHITE);
+
+            board.currentPlayer = Player.WHITE;
+
+            board.setPiece(Square.at(3, 4), pawn);
+            board.setPiece(Square.at(1, 3), opposingPiece);
+            opposingPiece.moveTo(board, Square.at(3,3));
+
+            const moves = pawn.getAvailableMoves(board);
+
+            moves.should.deep.include(Square.at(2, 3));
+        });
+
     });
 
     it('cannot move if there is a piece in front', () => {

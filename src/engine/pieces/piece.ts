@@ -18,4 +18,23 @@ export default class Piece {
         const currentSquare = board.findPiece(this);
         board.movePiece(currentSquare, newSquare);
     }
+
+    public isValidCapture(piece:Piece) {
+        return piece.player != this.player && !(this instanceof King);
+    }
+
+    public checkDirections(moves:Square[], directions:number[][], board:Board, location:Square) {
+        for (let dir of directions) {
+            let pos = Square.at(location.row+dir[0], location.col+dir[1]);
+            let clear = board.squareValid(pos);
+
+            while (clear) {
+                if (!board.squareValid(pos)) break;
+                let piece = board.getPiece(pos);
+                if (board.isClearMove(pos,this.player)) moves.push(pos);
+                clear = piece == undefined;
+                pos = Square.at(pos.row+dir[0], pos.col+dir[1]);
+            }
+        }
+    }
 }

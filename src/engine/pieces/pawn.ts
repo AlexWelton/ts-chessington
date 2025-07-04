@@ -5,8 +5,31 @@ import Square from "../square";
 import King from "./king";
 
 export default class Pawn extends Piece {
+
+    public lastDoubleMove: boolean;
+
     public constructor(player: Player) {
         super(player);
+        this.lastDoubleMove = false;
+    }
+
+    public moveTo(board: Board, newSquare: Square) {
+        const currentSquare = board.findPiece(this);
+
+        this.lastDoubleMove = (Math.abs(currentSquare.row - newSquare.row) == 2);
+        console.log('pawn is moving', currentSquare, newSquare, this.lastDoubleMove);
+        board.movePiece(currentSquare, newSquare);
+
+    }
+
+    public isValidEnPassant (board: Board, newSquare: Square): boolean{
+        const currentSquare = board.findPiece(this);
+        console.log(currentSquare.row, newSquare.col);
+        let otherPiece = board.getPiece(Square.at(currentSquare.row, newSquare.col));
+
+        console.log(otherPiece);
+        console.log(otherPiece instanceof Pawn && otherPiece.lastDoubleMove && otherPiece.player != this.player);
+        return (otherPiece instanceof Pawn && otherPiece.lastDoubleMove && otherPiece.player != this.player);
     }
 
     public getAvailableMoves(board: Board) {
@@ -18,13 +41,17 @@ export default class Pawn extends Piece {
 
         //Single move
         let singleMoveLocation = Square.at(location.row+direction,location.col);
-        if (board.squareValid(singleMoveLocation) && (typeof board.getPiece(singleMoveLocation) == 'undefined')) moves.push(singleMoveLocation);
+        let singleMoveLocationValid = singleMoveLocation?.validOn(board) && (typeof board.getPiece(singleMoveLocation) == 'undefined');
 
-        //Double move
-        if (location.row == homerow) {
-            let doubleMoveLocation = Square.at(location.row+(direction*2),location.col);
-            if (board.squareValid(doubleMoveLocation) && (typeof board.getPiece(singleMoveLocation) == 'undefined') && typeof board.getPiece(doubleMoveLocation) == 'undefined' ) moves.push(doubleMoveLocation);
+        if (singleMoveLocationValid) {
+            moves.push(singleMoveLocation);
+            //Double move
+            if (location.row == homerow) {
+                let doubleMoveLocation = Square.at(location.row+(direction*2),location.col);
+                if (doubleMoveLocation?.validOn(board) && typeof board.getPiece(doubleMoveLocation) == 'undefined') moves.push(doubleMoveLocation);
+            }
         }
+
 
         //Capturing move
         let leftCaptureLocation = Square.at(location.row+direction,location.col-1);
@@ -32,12 +59,12 @@ export default class Pawn extends Piece {
 
         if (board.squareValid(leftCaptureLocation)) {
             let leftPiece = board.getPiece(leftCaptureLocation);
-            if (leftPiece != undefined && leftPiece.player != this.player && !(leftPiece instanceof King)) moves.push(leftCaptureLocation);
+            if (leftPiece?.isValidCapture(this) || this.isValidEnPassant(board, leftCaptureLocation)) moves.push(leftCaptureLocation);
         }
 
         if (board.squareValid(rightCaptureLocation)) {
-            let rightPiece  = board.getPiece(leftCaptureLocation);
-            if (rightPiece != undefined && rightPiece.player != this.player && !(rightPiece instanceof King)) moves.push(rightCaptureLocation);
+            let rightPiece  = board.getPiece(rightCaptureLocation);
+            if (rightPiece?.isValidCapture(this) || this.isValidEnPassant(board, rightCaptureLocation)) moves.push(rightCaptureLocation);
         }
 
         return moves;
