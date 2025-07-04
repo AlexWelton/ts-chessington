@@ -90,15 +90,15 @@ describe('Rook', () => {
         moves.should.not.deep.include(Square.at(4, 6));
     });
 
-    it('moves during castling kingside', () => {
+    it('moves during castling queenside', () => {
         const king = new King(Player.WHITE);
         const rook = new Rook(Player.WHITE);
-        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 4), king);
         board.setPiece(Square.at(0, 0), rook);
-        king.moveTo(board, Square.at(0,1));
+        king.moveTo(board, Square.at(0,2));
 
         let rookSquare = board.findPiece(rook);
         assert.equal(rookSquare.row, 0);
-        assert.equal(rookSquare.col, 2);
+        assert.equal(rookSquare.col, 3);
     });
 });

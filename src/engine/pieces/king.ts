@@ -16,7 +16,7 @@ export default class King extends Piece {
         let location = board.findPiece(this);
         let currentSquare = Square.at(location.row, location.col + direction)
 
-        let count = direction == -1 ? 2 : 3
+        let count = direction == -1 ? 3 : 2
 
         for (let i = count; i > 0; i--) {
             if (!(board.getPiece(currentSquare) == undefined)) return false
@@ -70,12 +70,12 @@ export default class King extends Piece {
             if (diff > 0){
 
                 let rook = board.getPiece(Square.at(homerow, 7));
-                board.setPiece(Square.at(homerow, 4), rook);
+                board.setPiece(Square.at(homerow, 5), rook);
                 board.setPiece(Square.at(homerow, 7), undefined);
             } else {
 
                 let rook = board.getPiece(Square.at(homerow, 0));
-                board.setPiece(Square.at(homerow, 2), rook);
+                board.setPiece(Square.at(homerow, 3), rook);
                 board.setPiece(Square.at(homerow, 0), undefined);
 
             }
