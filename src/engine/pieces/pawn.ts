@@ -30,23 +30,26 @@ export default class Pawn extends Piece {
             let pieceType = null;
             let promoteString = (board.defaultPromote == undefined) ? prompt("Select piece to promote into >> ") : board.defaultPromote;
 
-            switch (promoteString) {
-                case "Q":
-                    pieceType = Queen;
-                    break;
-                case "N":
-                    pieceType = Knight;
-                    break;
-                case "B":
-                    pieceType = Bishop;
-                    break;
-                case "R":
-                    pieceType = Rook;
-                    break;
-                default:
-                    console.error("Invalid promote type");
-                    return;
+            while (pieceType == null) {
+                switch (promoteString) {
+                    case "Q":
+                        pieceType = Queen;
+                        break;
+                    case "N":
+                        pieceType = Knight;
+                        break;
+                    case "B":
+                        pieceType = Bishop;
+                        break;
+                    case "R":
+                        pieceType = Rook;
+                        break;
+                    default:
+                        promoteString = prompt("Invalid promotion\nSelect piece to promote into >> ");
+                        break;
+                }
             }
+
 
             board.setPiece(newSquare, new pieceType (this.player));
         }
